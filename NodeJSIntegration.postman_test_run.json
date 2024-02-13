@@ -1,0 +1,208 @@
+{
+	"id": "ecde3468-cc77-4dfa-aa78-bfd42bb8c60d",
+	"name": "NodeJSIntegration",
+	"timestamp": "2023-10-11T15:28:26.273Z",
+	"collection_id": "28132186-5656eabb-7fc6-48e0-8065-d5d136daa586",
+	"folder_id": 0,
+	"environment_id": "28132186-472b90ef-68d2-4116-8354-06c873394435",
+	"totalPass": 6,
+	"delay": 0,
+	"persist": true,
+	"status": "finished",
+	"startedAt": "2023-10-11T15:28:23.888Z",
+	"totalFail": 0,
+	"results": [
+		{
+			"id": "aafc7012-62a5-4d41-9229-ea76030c6e0c",
+			"name": "Refresh BranchI",
+			"url": "https://svdnjsap005/api/v2/supplyanddemand/refresh?branchId=SB",
+			"time": 571,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Collect Task ID": true
+			},
+			"testPassFailCounts": {
+				"Collect Task ID": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				571
+			],
+			"allTests": [
+				{
+					"Collect Task ID": true
+				}
+			]
+		},
+		{
+			"id": "1c0b10f8-4884-45b7-b36b-c5a865a2b20d",
+			"name": "Get Task Copy",
+			"url": "https://svdnjsap005/api/v2/tasks/1022",
+			"time": 115,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Capture Task Status": true
+			},
+			"testPassFailCounts": {
+				"Capture Task Status": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				115
+			],
+			"allTests": [
+				{
+					"Capture Task Status": true
+				}
+			]
+		},
+		{
+			"id": "4c88a0c2-d2f3-4dcb-aede-b282a873c9f6",
+			"name": "Search-DocType-PO",
+			"url": "https://svdnjsap005/inventory/search/v1/po/search?branchId=SB",
+			"time": 234,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Capture Doc Type for PO": true
+			},
+			"testPassFailCounts": {
+				"Capture Doc Type for PO": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				234
+			],
+			"allTests": [
+				{
+					"Capture Doc Type for PO": true
+				}
+			]
+		},
+		{
+			"id": "2bc3ace5-4b9b-4cfa-8521-e6a3276a3236",
+			"name": "Search-DocType-TO",
+			"url": "https://svdnjsap005/inventory/search/v1/to/search?branchId=SB",
+			"time": 199,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Capture Doc Type for TO": true
+			},
+			"testPassFailCounts": {
+				"Capture Doc Type for TO": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				199
+			],
+			"allTests": [
+				{
+					"Capture Doc Type for TO": true
+				}
+			]
+		},
+		{
+			"id": "2e6184a3-58b3-49d4-a175-510e2ae11f5e",
+			"name": "Search-DocType-ALL",
+			"url": "https://svdnjsap005/inventory/search/v1/all/search?branchId=SB",
+			"time": 216,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Capture Doc Type for ALL": true
+			},
+			"testPassFailCounts": {
+				"Capture Doc Type for ALL": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				216
+			],
+			"allTests": [
+				{
+					"Capture Doc Type for ALL": true
+				}
+			]
+		},
+		{
+			"id": "babbb396-1dc9-412a-a932-47adc0c62362",
+			"name": "Search-DocType- STO",
+			"url": "https://svdnjsap005/inventory/search/v1/sto/search?branchId=SB",
+			"time": 203,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Capture Doc Type for STO": true
+			},
+			"testPassFailCounts": {
+				"Capture Doc Type for STO": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				203
+			],
+			"allTests": [
+				{
+					"Capture Doc Type for STO": true
+				}
+			]
+		}
+	],
+	"count": 1,
+	"totalTime": 1538,
+	"collection": {
+		"requests": [
+			{
+				"id": "aafc7012-62a5-4d41-9229-ea76030c6e0c",
+				"method": "POST"
+			},
+			{
+				"id": "1c0b10f8-4884-45b7-b36b-c5a865a2b20d",
+				"method": "GET"
+			},
+			{
+				"id": "4c88a0c2-d2f3-4dcb-aede-b282a873c9f6",
+				"method": "POST"
+			},
+			{
+				"id": "2bc3ace5-4b9b-4cfa-8521-e6a3276a3236",
+				"method": "POST"
+			},
+			{
+				"id": "2e6184a3-58b3-49d4-a175-510e2ae11f5e",
+				"method": "POST"
+			},
+			{
+				"id": "babbb396-1dc9-412a-a932-47adc0c62362",
+				"method": "POST"
+			}
+		]
+	}
+}

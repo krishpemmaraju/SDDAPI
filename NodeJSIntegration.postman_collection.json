@@ -1,0 +1,1336 @@
+{
+	"info": {
+		"_postman_id": "cfa78252-66d7-410b-959c-0f8fc13bbfcb",
+		"name": "NodeJSIntegration",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "28132186",
+		"_collection_link": "https://wolseley-uk.postman.co/workspace/Integration-Testing~ac3ed168-efe5-4fd3-a87f-1156f1250447/collection/28132186-cfa78252-66d7-410b-959c-0f8fc13bbfcb?action=share&source=collection_link&creator=28132186"
+	},
+	"item": [
+		{
+			"name": "NodeJSIntegration",
+			"item": [
+				{
+					"name": "Refresh BranchI",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Collect Task ID\", function () {\r",
+									"let responseData = JSON.parse(responseBody)\r",
+									"taskID = responseData.item.taskId\r",
+									"console.log(taskID)\r",
+									"pm.globals.set(\"taskID\",taskID);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "api",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "api",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "wol-sessionId",
+								"value": "{{wol-sessionId}}",
+								"type": "text"
+							},
+							{
+								"key": "wol-appId",
+								"value": "supplyanddemand",
+								"type": "text"
+							},
+							{
+								"key": "x-api-key",
+								"value": "{{accessToken}}",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"type": "file",
+									"src": [],
+									"disabled": true
+								},
+								{
+									"key": "batchJobId",
+									"value": "9",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{baseURL}}/api/v2/supplyanddemand/refresh?branchId=SB",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"v2",
+								"supplyanddemand",
+								"refresh"
+							],
+							"query": [
+								{
+									"key": "branchId",
+									"value": "SB"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Refresh Branch",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "wol-sessionId",
+										"value": "{{wol-sessionId}}",
+										"type": "text"
+									},
+									{
+										"key": "wol-appId",
+										"value": "supplyanddemand",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "file",
+											"type": "file",
+											"src": []
+										},
+										{
+											"key": "batchJobId",
+											"value": "9",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{base}}/api/v2/supplyanddemand/refresh?branchId=SB",
+									"host": [
+										"{{base}}"
+									],
+									"path": [
+										"api",
+										"v2",
+										"supplyanddemand",
+										"refresh"
+									],
+									"query": [
+										{
+											"key": "branchId",
+											"value": "SB"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "265"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"109-rPhyYoZDiL4iDe+4nLVf67tkb+k\""
+								},
+								{
+									"key": "Date",
+									"value": "Sun, 01 Oct 2023 12:09:05 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"item\": {\n        \"taskId\": \"1022\",\n        \"batchJobId\": 9,\n        \"status\": \"NEW\",\n        \"createdOn\": \"2023-10-01T12:09:05.121Z\",\n        \"createdBy\": \"giles.hutchinson@wolseley.co.uk\",\n        \"lastUpdated\": \"2023-10-01T12:09:05.121Z\",\n        \"payload\": {\n            \"branchId\": \"SB\",\n            \"type\": \"forecast\"\n        }\n    },\n    \"errorCode\": \"OK\",\n    \"errorMessage\": \"OK\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Get Task Copy",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Capture Task Status\", function () {\r",
+									"let responseData = JSON.parse(responseBody)\r",
+									"for(let i=0;i<6;i++){\r",
+									"    status = responseData.item.status\r",
+									"    if(status == \"COMPLETE\"){ \r",
+									"        console.log(i);\r",
+									"        i=5;\r",
+									"        break;\r",
+									"    }\r",
+									"    setTimeout(function(){}, 20000);\r",
+									"    postman.setNextRequest(\"Get Task Copy\");\r",
+									"}\r",
+									"if(status == \"COMPLETE\"){\r",
+									"pm.expect(status).to.eql(\"COMPLETE\")}\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "api",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "api",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "wol-sessionId",
+								"value": "{{wol-sessionId}}"
+							},
+							{
+								"key": "x-api-key",
+								"value": "{{accessToken}}",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"url": {
+							"raw": "{{baseURL}}/api/v2/tasks/:taskId",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"v2",
+								"tasks",
+								":taskId"
+							],
+							"variable": [
+								{
+									"key": "taskId",
+									"value": "{{taskID}}"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "200 Get Task",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "wol-sessionId",
+										"value": "FA603D54D80A23B3E0532014000A8494"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/api/v2/tasks/:taskId",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"v2",
+										"tasks",
+										":taskId"
+									],
+									"variable": [
+										{
+											"key": "taskId",
+											"value": "{{taskID}}"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "330"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"14a-GpetYIr6t4+d2wDoItuivUHLGVc\""
+								},
+								{
+									"key": "Date",
+									"value": "Sun, 01 Oct 2023 11:57:36 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"item\": {\n        \"taskId\": \"919\",\n        \"batchJobId\": \"9\",\n        \"status\": \"COMPLETE\",\n        \"createdOn\": \"2023-08-11T21:56:38.878Z\",\n        \"createdBy\": \"giles.hutchinson@wolseley.co.uk\",\n        \"lastUpdated\": \"2023-08-11T21:56:38.878Z\",\n        \"totalItems\": 1,\n        \"passedCount\": 0,\n        \"failedCount\": 0,\n        \"payload\": \"{\\\"branchId\\\":\\\"SK\\\", \\\"type\\\": \\\"forecast\\\"}\"\n    },\n    \"errorCode\": \"OK\",\n    \"errorMessage\": \"OK\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Search-DocType-PO",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Capture Doc Type for PO\", function () {\r",
+									"let responseData = JSON.parse(responseBody)\r",
+									"totalRows = responseData.items\r",
+									"for(let i=0;i<totalRows.length;i++){\r",
+									"    pm.expect(responseData.items[i]._source.docType).to.eql(\"po\") \r",
+									"    pm.expect(responseData.items[i]._index).to.eql(\"ds_po\")\r",
+									"   }\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "api",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "api",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "wol-sessionId",
+								"value": "{{wol-sessionId}}",
+								"description": "FA603D54D80A23B3E0532014000A8494"
+							},
+							{
+								"key": "wol-appId",
+								"value": "supplyanddemand"
+							},
+							{
+								"key": "wol-selectedBranch",
+								"value": "SB"
+							},
+							{
+								"key": "x-api-key",
+								"value": "{{accessToken}}",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"url": {
+							"raw": "{{baseURL}}/inventory/search/v1/:supplyType/search?branchId=SB",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"inventory",
+								"search",
+								"v1",
+								":supplyType",
+								"search"
+							],
+							"query": [
+								{
+									"key": "branchId",
+									"value": "SB"
+								},
+								{
+									"key": "includeItems",
+									"value": "false",
+									"disabled": true
+								}
+							],
+							"variable": [
+								{
+									"key": "supplyType",
+									"value": "po",
+									"description": "orders,all"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "200 Search-DocType-PO",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "wol-sessionId",
+										"value": "FA603D54D80A23B3E0532014000A8494"
+									},
+									{
+										"key": "wol-appId",
+										"value": "supplyanddemand"
+									},
+									{
+										"key": "wol-selectedBranch",
+										"value": "SB"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/inventory/search/v1/:supplyType/search?branchId=SB",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"inventory",
+										"search",
+										"v1",
+										":supplyType",
+										"search"
+									],
+									"query": [
+										{
+											"key": "branchId",
+											"value": "SB"
+										},
+										{
+											"key": "includeItems",
+											"value": "false",
+											"disabled": true
+										}
+									],
+									"variable": [
+										{
+											"key": "supplyType",
+											"value": "all"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "1385"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"569-UwdJXMxkHxUxSVmqQ6Ym2HvhL6Q\""
+								},
+								{
+									"key": "Date",
+									"value": "Sun, 01 Oct 2023 12:16:25 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"items\": [\n        {\n            \"idx\": \"demand\",\n            \"name\": \"Branch Demand\",\n            \"kpis\": [\n                {\n                    \"id\": 0,\n                    \"title\": \"PAST DUE\",\n                    \"metric\": 1,\n                    \"meta\": \"PAST DUE\",\n                    \"chartData\": []\n                },\n                {\n                    \"id\": 1,\n                    \"title\": \"PROBLEMATIC\",\n                    \"metric\": 0,\n                    \"meta\": \"PROBLEMATIC\",\n                    \"chartData\": []\n                },\n                {\n                    \"id\": 2,\n                    \"title\": \"AT RISK\",\n                    \"metric\": 0,\n                    \"meta\": \"AT RISK\",\n                    \"chartData\": []\n                },\n                {\n                    \"id\": 3,\n                    \"title\": \"ON TIME\",\n                    \"metric\": 0,\n                    \"meta\": \"ON TIME\",\n                    \"chartData\": []\n                },\n                {\n                    \"id\": 4,\n                    \"title\": \"UNFULFILLED\",\n                    \"metric\": 1342,\n                    \"meta\": \"UNFULFILLED\",\n                    \"chartData\": [\n                        {\n                            \"id\": 0,\n                            \"series\": \"late\",\n                            \"group\": \"demand\",\n                            \"value\": 1303\n                        },\n                        {\n                            \"id\": 1,\n                            \"series\": \"today\",\n                            \"group\": \"demand\",\n                            \"value\": 3\n                        },\n                        {\n                            \"id\": 2,\n                            \"series\": \"future\",\n                            \"group\": \"demand\",\n                            \"value\": 0\n                        }\n                    ]\n                }\n            ]\n        },\n        {\n            \"idx\": \"supply\",\n            \"name\": \"Branch Supply\",\n            \"kpis\": [\n                {\n                    \"name\": \"DC Transfer Orders Due\",\n                    \"chartData\": [\n                        {\n                            \"id\": 0,\n                            \"series\": \"late\",\n                            \"group\": \"transferorders\",\n                            \"value\": 3\n                        },\n                        {\n                            \"id\": 1,\n                            \"series\": \"today\",\n                            \"group\": \"transferorders\",\n                            \"value\": 0\n                        },\n                        {\n                            \"id\": 2,\n                            \"series\": \"future\",\n                            \"group\": \"transferorders\",\n                            \"value\": 0\n                        }\n                    ]\n                },\n                {\n                    \"name\": \"Purchase Orders Due\",\n                    \"chartData\": [\n                        {\n                            \"id\": 0,\n                            \"series\": \"late\",\n                            \"group\": \"purchaseorders\",\n                            \"value\": 0\n                        },\n                        {\n                            \"id\": 1,\n                            \"series\": \"today\",\n                            \"group\": \"purchaseorders\",\n                            \"value\": 0\n                        },\n                        {\n                            \"id\": 2,\n                            \"series\": \"future\",\n                            \"group\": \"purchaseorders\",\n                            \"value\": 0\n                        }\n                    ]\n                },\n                {\n                    \"name\": \"Branch STO's Due\",\n                    \"chartData\": [\n                        {\n                            \"id\": 0,\n                            \"series\": \"late\",\n                            \"group\": \"sto\",\n                            \"value\": 0\n                        },\n                        {\n                            \"id\": 1,\n                            \"series\": \"today\",\n                            \"group\": \"sto\",\n                            \"value\": 0\n                        },\n                        {\n                            \"id\": 2,\n                            \"series\": \"future\",\n                            \"group\": \"sto\",\n                            \"value\": 0\n                        }\n                    ]\n                }\n            ]\n        }\n    ],\n    \"count\": 0,\n    \"limit\": 25,\n    \"offset\": 0,\n    \"total\": 0,\n    \"errorCode\": \"OK\",\n    \"errorMessage\": \"\",\n    \"hasMore\": false\n}"
+						}
+					]
+				},
+				{
+					"name": "Search-DocType-TO",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Capture Doc Type for TO\", function () {\r",
+									"let responseData = JSON.parse(responseBody)\r",
+									"totalRows = responseData.items\r",
+									"for(let i=0;i<totalRows.length;i++){\r",
+									"    pm.expect(responseData.items[i]._source.docType).to.eql(\"to\") \r",
+									"    pm.expect(responseData.items[i]._index).to.eql(\"ds_to\")\r",
+									"   }\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "api",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "api",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "wol-sessionId",
+								"value": "{{wol-sessionId}}",
+								"description": "FA603D54D80A23B3E0532014000A8494"
+							},
+							{
+								"key": "wol-appId",
+								"value": "supplyanddemand"
+							},
+							{
+								"key": "wol-selectedBranch",
+								"value": "SB"
+							},
+							{
+								"key": "x-api-key",
+								"value": "{{accessToken}}",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"url": {
+							"raw": "{{baseURL}}/inventory/search/v1/:supplyType/search?branchId=SB",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"inventory",
+								"search",
+								"v1",
+								":supplyType",
+								"search"
+							],
+							"query": [
+								{
+									"key": "branchId",
+									"value": "SB"
+								},
+								{
+									"key": "includeItems",
+									"value": "false",
+									"disabled": true
+								}
+							],
+							"variable": [
+								{
+									"key": "supplyType",
+									"value": "to",
+									"description": "orders,all"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "200 Search-DocType-TO",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "wol-sessionId",
+										"value": "{{wol-sessionId}}"
+									},
+									{
+										"key": "wol-appId",
+										"value": "supplyanddemand"
+									},
+									{
+										"key": "wol-selectedBranch",
+										"value": "SB"
+									}
+								],
+								"url": {
+									"raw": "{{baseURL}}/inventory/search/v1/:supplyType/search?branchId=SB",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"inventory",
+										"search",
+										"v1",
+										":supplyType",
+										"search"
+									],
+									"query": [
+										{
+											"key": "branchId",
+											"value": "SB"
+										},
+										{
+											"key": "includeItems",
+											"value": "false",
+											"disabled": true
+										}
+									],
+									"variable": [
+										{
+											"key": "supplyType",
+											"value": "to"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "1385"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"569-UwdJXMxkHxUxSVmqQ6Ym2HvhL6Q\""
+								},
+								{
+									"key": "Date",
+									"value": "Sun, 01 Oct 2023 12:16:25 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"items\": [\n        {\n            \"idx\": \"demand\",\n            \"name\": \"Branch Demand\",\n            \"kpis\": [\n                {\n                    \"id\": 0,\n                    \"title\": \"PAST DUE\",\n                    \"metric\": 1,\n                    \"meta\": \"PAST DUE\",\n                    \"chartData\": []\n                },\n                {\n                    \"id\": 1,\n                    \"title\": \"PROBLEMATIC\",\n                    \"metric\": 0,\n                    \"meta\": \"PROBLEMATIC\",\n                    \"chartData\": []\n                },\n                {\n                    \"id\": 2,\n                    \"title\": \"AT RISK\",\n                    \"metric\": 0,\n                    \"meta\": \"AT RISK\",\n                    \"chartData\": []\n                },\n                {\n                    \"id\": 3,\n                    \"title\": \"ON TIME\",\n                    \"metric\": 0,\n                    \"meta\": \"ON TIME\",\n                    \"chartData\": []\n                },\n                {\n                    \"id\": 4,\n                    \"title\": \"UNFULFILLED\",\n                    \"metric\": 1342,\n                    \"meta\": \"UNFULFILLED\",\n                    \"chartData\": [\n                        {\n                            \"id\": 0,\n                            \"series\": \"late\",\n                            \"group\": \"demand\",\n                            \"value\": 1303\n                        },\n                        {\n                            \"id\": 1,\n                            \"series\": \"today\",\n                            \"group\": \"demand\",\n                            \"value\": 3\n                        },\n                        {\n                            \"id\": 2,\n                            \"series\": \"future\",\n                            \"group\": \"demand\",\n                            \"value\": 0\n                        }\n                    ]\n                }\n            ]\n        },\n        {\n            \"idx\": \"supply\",\n            \"name\": \"Branch Supply\",\n            \"kpis\": [\n                {\n                    \"name\": \"DC Transfer Orders Due\",\n                    \"chartData\": [\n                        {\n                            \"id\": 0,\n                            \"series\": \"late\",\n                            \"group\": \"transferorders\",\n                            \"value\": 3\n                        },\n                        {\n                            \"id\": 1,\n                            \"series\": \"today\",\n                            \"group\": \"transferorders\",\n                            \"value\": 0\n                        },\n                        {\n                            \"id\": 2,\n                            \"series\": \"future\",\n                            \"group\": \"transferorders\",\n                            \"value\": 0\n                        }\n                    ]\n                },\n                {\n                    \"name\": \"Purchase Orders Due\",\n                    \"chartData\": [\n                        {\n                            \"id\": 0,\n                            \"series\": \"late\",\n                            \"group\": \"purchaseorders\",\n                            \"value\": 0\n                        },\n                        {\n                            \"id\": 1,\n                            \"series\": \"today\",\n                            \"group\": \"purchaseorders\",\n                            \"value\": 0\n                        },\n                        {\n                            \"id\": 2,\n                            \"series\": \"future\",\n                            \"group\": \"purchaseorders\",\n                            \"value\": 0\n                        }\n                    ]\n                },\n                {\n                    \"name\": \"Branch STO's Due\",\n                    \"chartData\": [\n                        {\n                            \"id\": 0,\n                            \"series\": \"late\",\n                            \"group\": \"sto\",\n                            \"value\": 0\n                        },\n                        {\n                            \"id\": 1,\n                            \"series\": \"today\",\n                            \"group\": \"sto\",\n                            \"value\": 0\n                        },\n                        {\n                            \"id\": 2,\n                            \"series\": \"future\",\n                            \"group\": \"sto\",\n                            \"value\": 0\n                        }\n                    ]\n                }\n            ]\n        }\n    ],\n    \"count\": 0,\n    \"limit\": 25,\n    \"offset\": 0,\n    \"total\": 0,\n    \"errorCode\": \"OK\",\n    \"errorMessage\": \"\",\n    \"hasMore\": false\n}"
+						}
+					]
+				},
+				{
+					"name": "Search-DocType-ALL",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Capture Doc Type for ALL\", function () {\r",
+									"let responseData = JSON.parse(responseBody)\r",
+									"let KpiTitles\r",
+									"let KpiTitlesS\r",
+									"totalRows = responseData.items\r",
+									"for(let i=0;i<totalRows.length;i++){\r",
+									"    if(responseData.items[i].idx == \"demand\"){\r",
+									"        getKPIs = responseData.items[i].kpis;\r",
+									"  for(let kpi=0;kpi<getKPIs.length;kpi++){\r",
+									"        KpiTitles = KpiTitles + \",\" + (responseData.items[i].kpis[kpi].title)\r",
+									"    }     \r",
+									"       pm.expect(KpiTitles).contains(\"PAST DUE\")  \r",
+									"       pm.expect(KpiTitles).contains(\"PROBLEMATIC\")\r",
+									"       pm.expect(KpiTitles).contains(\"AT RISK\")\r",
+									"       pm.expect(KpiTitles).contains(\"ON TIME\") \r",
+									"       pm.expect(KpiTitles).contains(\"UNFULFILLED\")      \r",
+									"    }\r",
+									"\r",
+									"     if(responseData.items[i].idx == \"supply\"){\r",
+									"        getKPISupply = responseData.items[i].kpis;\r",
+									"        for(let kpiS=0;kpiS<getKPISupply.length;kpiS++){\r",
+									"            KpiTitlesS = KpiTitlesS + \",\" + (responseData.items[i].kpis[kpiS].name)\r",
+									"        }\r",
+									"       pm.expect(KpiTitlesS).contains(\"DC Transfer Orders Due\")  \r",
+									"       pm.expect(KpiTitlesS).contains(\"Purchase Orders Due\")\r",
+									"       pm.expect(KpiTitlesS).contains(\"Branch STOs Due\")\r",
+									"     }\r",
+									" \r",
+									"}\r",
+									"\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "api",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "api",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "wol-sessionId",
+								"value": "{{wol-sessionId}}",
+								"description": "FA603D54D80A23B3E0532014000A8494"
+							},
+							{
+								"key": "wol-appId",
+								"value": "supplyanddemand"
+							},
+							{
+								"key": "wol-selectedBranch",
+								"value": "SB"
+							},
+							{
+								"key": "x-api-key",
+								"value": "{{accessToken}}",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"url": {
+							"raw": "{{baseURL}}/inventory/search/v1/:supplyType/search?branchId=SB",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"inventory",
+								"search",
+								"v1",
+								":supplyType",
+								"search"
+							],
+							"query": [
+								{
+									"key": "branchId",
+									"value": "SB"
+								},
+								{
+									"key": "includeItems",
+									"value": "false",
+									"disabled": true
+								}
+							],
+							"variable": [
+								{
+									"key": "supplyType",
+									"value": "all",
+									"description": "orders,all"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "200 Search-DocType-ALL",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "wol-sessionId",
+										"value": "{{wol-sessionId}}"
+									},
+									{
+										"key": "wol-appId",
+										"value": "supplyanddemand"
+									},
+									{
+										"key": "wol-selectedBranch",
+										"value": "SB"
+									}
+								],
+								"url": {
+									"raw": "{{baseURL}}/inventory/search/v1/:supplyType/search?branchId=SB",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"inventory",
+										"search",
+										"v1",
+										":supplyType",
+										"search"
+									],
+									"query": [
+										{
+											"key": "branchId",
+											"value": "SB"
+										},
+										{
+											"key": "includeItems",
+											"value": "false",
+											"disabled": true
+										}
+									],
+									"variable": [
+										{
+											"key": "supplyType",
+											"value": "all"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "1385"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"569-UwdJXMxkHxUxSVmqQ6Ym2HvhL6Q\""
+								},
+								{
+									"key": "Date",
+									"value": "Sun, 01 Oct 2023 12:16:25 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"items\": [\n        {\n            \"idx\": \"demand\",\n            \"name\": \"Branch Demand\",\n            \"kpis\": [\n                {\n                    \"id\": 0,\n                    \"title\": \"PAST DUE\",\n                    \"metric\": 1,\n                    \"meta\": \"PAST DUE\",\n                    \"chartData\": []\n                },\n                {\n                    \"id\": 1,\n                    \"title\": \"PROBLEMATIC\",\n                    \"metric\": 0,\n                    \"meta\": \"PROBLEMATIC\",\n                    \"chartData\": []\n                },\n                {\n                    \"id\": 2,\n                    \"title\": \"AT RISK\",\n                    \"metric\": 0,\n                    \"meta\": \"AT RISK\",\n                    \"chartData\": []\n                },\n                {\n                    \"id\": 3,\n                    \"title\": \"ON TIME\",\n                    \"metric\": 0,\n                    \"meta\": \"ON TIME\",\n                    \"chartData\": []\n                },\n                {\n                    \"id\": 4,\n                    \"title\": \"UNFULFILLED\",\n                    \"metric\": 1342,\n                    \"meta\": \"UNFULFILLED\",\n                    \"chartData\": [\n                        {\n                            \"id\": 0,\n                            \"series\": \"late\",\n                            \"group\": \"demand\",\n                            \"value\": 1303\n                        },\n                        {\n                            \"id\": 1,\n                            \"series\": \"today\",\n                            \"group\": \"demand\",\n                            \"value\": 3\n                        },\n                        {\n                            \"id\": 2,\n                            \"series\": \"future\",\n                            \"group\": \"demand\",\n                            \"value\": 0\n                        }\n                    ]\n                }\n            ]\n        },\n        {\n            \"idx\": \"supply\",\n            \"name\": \"Branch Supply\",\n            \"kpis\": [\n                {\n                    \"name\": \"DC Transfer Orders Due\",\n                    \"chartData\": [\n                        {\n                            \"id\": 0,\n                            \"series\": \"late\",\n                            \"group\": \"transferorders\",\n                            \"value\": 3\n                        },\n                        {\n                            \"id\": 1,\n                            \"series\": \"today\",\n                            \"group\": \"transferorders\",\n                            \"value\": 0\n                        },\n                        {\n                            \"id\": 2,\n                            \"series\": \"future\",\n                            \"group\": \"transferorders\",\n                            \"value\": 0\n                        }\n                    ]\n                },\n                {\n                    \"name\": \"Purchase Orders Due\",\n                    \"chartData\": [\n                        {\n                            \"id\": 0,\n                            \"series\": \"late\",\n                            \"group\": \"purchaseorders\",\n                            \"value\": 0\n                        },\n                        {\n                            \"id\": 1,\n                            \"series\": \"today\",\n                            \"group\": \"purchaseorders\",\n                            \"value\": 0\n                        },\n                        {\n                            \"id\": 2,\n                            \"series\": \"future\",\n                            \"group\": \"purchaseorders\",\n                            \"value\": 0\n                        }\n                    ]\n                },\n                {\n                    \"name\": \"Branch STO's Due\",\n                    \"chartData\": [\n                        {\n                            \"id\": 0,\n                            \"series\": \"late\",\n                            \"group\": \"sto\",\n                            \"value\": 0\n                        },\n                        {\n                            \"id\": 1,\n                            \"series\": \"today\",\n                            \"group\": \"sto\",\n                            \"value\": 0\n                        },\n                        {\n                            \"id\": 2,\n                            \"series\": \"future\",\n                            \"group\": \"sto\",\n                            \"value\": 0\n                        }\n                    ]\n                }\n            ]\n        }\n    ],\n    \"count\": 0,\n    \"limit\": 25,\n    \"offset\": 0,\n    \"total\": 0,\n    \"errorCode\": \"OK\",\n    \"errorMessage\": \"\",\n    \"hasMore\": false\n}"
+						}
+					]
+				},
+				{
+					"name": "Search-DocType- STO",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Capture Doc Type for STO\", function () {\r",
+									"let responseData = JSON.parse(responseBody)\r",
+									"totalRows = responseData.items\r",
+									"for(let i=0;i<totalRows.length;i++){\r",
+									"    pm.expect(responseData.items[i]._source.docType).to.eql(\"sto\") \r",
+									"    pm.expect(responseData.items[i]._index).to.eql(\"ds_sto\")\r",
+									"   }\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "api",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "api",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "wol-sessionId",
+								"value": "{{wol-sessionId}}",
+								"description": "FA603D54D80A23B3E0532014000A8494"
+							},
+							{
+								"key": "wol-appId",
+								"value": "supplyanddemand"
+							},
+							{
+								"key": "wol-selectedBranch",
+								"value": "SB"
+							},
+							{
+								"key": "x-api-key",
+								"value": "{{accessToken}}",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"url": {
+							"raw": "{{baseURL}}/inventory/search/v1/:supplyType/search?branchId=SB",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"inventory",
+								"search",
+								"v1",
+								":supplyType",
+								"search"
+							],
+							"query": [
+								{
+									"key": "branchId",
+									"value": "SB"
+								},
+								{
+									"key": "includeItems",
+									"value": "false",
+									"disabled": true
+								}
+							],
+							"variable": [
+								{
+									"key": "supplyType",
+									"value": "sto",
+									"description": "orders,all"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "200 Search-DocType-STO",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "wol-sessionId",
+										"value": "FA603D54D80A23B3E0532014000A8494"
+									},
+									{
+										"key": "wol-appId",
+										"value": "supplyanddemand"
+									},
+									{
+										"key": "wol-selectedBranch",
+										"value": "SB"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/inventory/search/v1/:supplyType/search?branchId=SB",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"inventory",
+										"search",
+										"v1",
+										":supplyType",
+										"search"
+									],
+									"query": [
+										{
+											"key": "branchId",
+											"value": "SB"
+										},
+										{
+											"key": "includeItems",
+											"value": "false",
+											"disabled": true
+										}
+									],
+									"variable": [
+										{
+											"key": "supplyType",
+											"value": "all"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "1385"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"569-UwdJXMxkHxUxSVmqQ6Ym2HvhL6Q\""
+								},
+								{
+									"key": "Date",
+									"value": "Sun, 01 Oct 2023 12:16:25 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"items\": [\n        {\n            \"idx\": \"demand\",\n            \"name\": \"Branch Demand\",\n            \"kpis\": [\n                {\n                    \"id\": 0,\n                    \"title\": \"PAST DUE\",\n                    \"metric\": 1,\n                    \"meta\": \"PAST DUE\",\n                    \"chartData\": []\n                },\n                {\n                    \"id\": 1,\n                    \"title\": \"PROBLEMATIC\",\n                    \"metric\": 0,\n                    \"meta\": \"PROBLEMATIC\",\n                    \"chartData\": []\n                },\n                {\n                    \"id\": 2,\n                    \"title\": \"AT RISK\",\n                    \"metric\": 0,\n                    \"meta\": \"AT RISK\",\n                    \"chartData\": []\n                },\n                {\n                    \"id\": 3,\n                    \"title\": \"ON TIME\",\n                    \"metric\": 0,\n                    \"meta\": \"ON TIME\",\n                    \"chartData\": []\n                },\n                {\n                    \"id\": 4,\n                    \"title\": \"UNFULFILLED\",\n                    \"metric\": 1342,\n                    \"meta\": \"UNFULFILLED\",\n                    \"chartData\": [\n                        {\n                            \"id\": 0,\n                            \"series\": \"late\",\n                            \"group\": \"demand\",\n                            \"value\": 1303\n                        },\n                        {\n                            \"id\": 1,\n                            \"series\": \"today\",\n                            \"group\": \"demand\",\n                            \"value\": 3\n                        },\n                        {\n                            \"id\": 2,\n                            \"series\": \"future\",\n                            \"group\": \"demand\",\n                            \"value\": 0\n                        }\n                    ]\n                }\n            ]\n        },\n        {\n            \"idx\": \"supply\",\n            \"name\": \"Branch Supply\",\n            \"kpis\": [\n                {\n                    \"name\": \"DC Transfer Orders Due\",\n                    \"chartData\": [\n                        {\n                            \"id\": 0,\n                            \"series\": \"late\",\n                            \"group\": \"transferorders\",\n                            \"value\": 3\n                        },\n                        {\n                            \"id\": 1,\n                            \"series\": \"today\",\n                            \"group\": \"transferorders\",\n                            \"value\": 0\n                        },\n                        {\n                            \"id\": 2,\n                            \"series\": \"future\",\n                            \"group\": \"transferorders\",\n                            \"value\": 0\n                        }\n                    ]\n                },\n                {\n                    \"name\": \"Purchase Orders Due\",\n                    \"chartData\": [\n                        {\n                            \"id\": 0,\n                            \"series\": \"late\",\n                            \"group\": \"purchaseorders\",\n                            \"value\": 0\n                        },\n                        {\n                            \"id\": 1,\n                            \"series\": \"today\",\n                            \"group\": \"purchaseorders\",\n                            \"value\": 0\n                        },\n                        {\n                            \"id\": 2,\n                            \"series\": \"future\",\n                            \"group\": \"purchaseorders\",\n                            \"value\": 0\n                        }\n                    ]\n                },\n                {\n                    \"name\": \"Branch STO's Due\",\n                    \"chartData\": [\n                        {\n                            \"id\": 0,\n                            \"series\": \"late\",\n                            \"group\": \"sto\",\n                            \"value\": 0\n                        },\n                        {\n                            \"id\": 1,\n                            \"series\": \"today\",\n                            \"group\": \"sto\",\n                            \"value\": 0\n                        },\n                        {\n                            \"id\": 2,\n                            \"series\": \"future\",\n                            \"group\": \"sto\",\n                            \"value\": 0\n                        }\n                    ]\n                }\n            ]\n        }\n    ],\n    \"count\": 0,\n    \"limit\": 25,\n    \"offset\": 0,\n    \"total\": 0,\n    \"errorCode\": \"OK\",\n    \"errorMessage\": \"\",\n    \"hasMore\": false\n}"
+						}
+					]
+				},
+				{
+					"name": "Search with Filters Copy",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "api",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "api",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "wol-sessionId",
+								"value": "{{wol-sessionId}}"
+							},
+							{
+								"key": "wol-appId",
+								"value": "supplyanddemand"
+							},
+							{
+								"key": "wol-selectedBranch",
+								"value": "SB"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"filters\": [\n    {\n      \"filter\": \"status\",\n      \"value\": \"PROBLEMATIC\"\n    }\n  ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/inventory/search/v1/:supplyType/search?branchId=SB",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"inventory",
+								"search",
+								"v1",
+								":supplyType",
+								"search"
+							],
+							"query": [
+								{
+									"key": "branchId",
+									"value": "SB"
+								},
+								{
+									"key": "includeItems",
+									"value": "false",
+									"disabled": true
+								}
+							],
+							"variable": [
+								{
+									"key": "supplyType",
+									"value": "to"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "200 Search with Filters",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "wol-sessionId",
+										"value": "FA603D54D80A23B3E0532014000A8494"
+									},
+									{
+										"key": "wol-appId",
+										"value": "supplyanddemand"
+									},
+									{
+										"key": "wol-selectedBranch",
+										"value": "SB"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"filters\": [\n    {\n      \"filter\": \"status\",\n      \"value\": \"UNFULFILLED\"\n    },\n    {\n      \"filter\": \"keyword\",\n      \"value\": \"copper\"\n    }\n  ]\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/inventory/search/v1/:supplyType/search?branchId=SB",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"inventory",
+										"search",
+										"v1",
+										":supplyType",
+										"search"
+									],
+									"query": [
+										{
+											"key": "branchId",
+											"value": "SB"
+										},
+										{
+											"key": "includeItems",
+											"value": "false",
+											"disabled": true
+										}
+									],
+									"variable": [
+										{
+											"key": "supplyType",
+											"value": "all"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "1383"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"567-N4yIQ530VhDj5xvVcukMSU31qrs\""
+								},
+								{
+									"key": "Date",
+									"value": "Sun, 01 Oct 2023 12:17:34 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"items\": [\n        {\n            \"idx\": \"demand\",\n            \"name\": \"Branch Demand\",\n            \"kpis\": [\n                {\n                    \"id\": 0,\n                    \"title\": \"PAST DUE\",\n                    \"metric\": 0,\n                    \"meta\": \"PAST DUE\",\n                    \"chartData\": []\n                },\n                {\n                    \"id\": 1,\n                    \"title\": \"PROBLEMATIC\",\n                    \"metric\": 0,\n                    \"meta\": \"PROBLEMATIC\",\n                    \"chartData\": []\n                },\n                {\n                    \"id\": 2,\n                    \"title\": \"AT RISK\",\n                    \"metric\": 0,\n                    \"meta\": \"AT RISK\",\n                    \"chartData\": []\n                },\n                {\n                    \"id\": 3,\n                    \"title\": \"ON TIME\",\n                    \"metric\": 0,\n                    \"meta\": \"ON TIME\",\n                    \"chartData\": []\n                },\n                {\n                    \"id\": 4,\n                    \"title\": \"UNFULFILLED\",\n                    \"metric\": 198,\n                    \"meta\": \"UNFULFILLED\",\n                    \"chartData\": [\n                        {\n                            \"id\": 0,\n                            \"series\": \"late\",\n                            \"group\": \"demand\",\n                            \"value\": 194\n                        },\n                        {\n                            \"id\": 1,\n                            \"series\": \"today\",\n                            \"group\": \"demand\",\n                            \"value\": 0\n                        },\n                        {\n                            \"id\": 2,\n                            \"series\": \"future\",\n                            \"group\": \"demand\",\n                            \"value\": 0\n                        }\n                    ]\n                }\n            ]\n        },\n        {\n            \"idx\": \"supply\",\n            \"name\": \"Branch Supply\",\n            \"kpis\": [\n                {\n                    \"name\": \"DC Transfer Orders Due\",\n                    \"chartData\": [\n                        {\n                            \"id\": 0,\n                            \"series\": \"late\",\n                            \"group\": \"transferorders\",\n                            \"value\": 0\n                        },\n                        {\n                            \"id\": 1,\n                            \"series\": \"today\",\n                            \"group\": \"transferorders\",\n                            \"value\": 0\n                        },\n                        {\n                            \"id\": 2,\n                            \"series\": \"future\",\n                            \"group\": \"transferorders\",\n                            \"value\": 0\n                        }\n                    ]\n                },\n                {\n                    \"name\": \"Purchase Orders Due\",\n                    \"chartData\": [\n                        {\n                            \"id\": 0,\n                            \"series\": \"late\",\n                            \"group\": \"purchaseorders\",\n                            \"value\": 0\n                        },\n                        {\n                            \"id\": 1,\n                            \"series\": \"today\",\n                            \"group\": \"purchaseorders\",\n                            \"value\": 0\n                        },\n                        {\n                            \"id\": 2,\n                            \"series\": \"future\",\n                            \"group\": \"purchaseorders\",\n                            \"value\": 0\n                        }\n                    ]\n                },\n                {\n                    \"name\": \"Branch STO's Due\",\n                    \"chartData\": [\n                        {\n                            \"id\": 0,\n                            \"series\": \"late\",\n                            \"group\": \"sto\",\n                            \"value\": 0\n                        },\n                        {\n                            \"id\": 1,\n                            \"series\": \"today\",\n                            \"group\": \"sto\",\n                            \"value\": 0\n                        },\n                        {\n                            \"id\": 2,\n                            \"series\": \"future\",\n                            \"group\": \"sto\",\n                            \"value\": 0\n                        }\n                    ]\n                }\n            ]\n        }\n    ],\n    \"count\": 0,\n    \"limit\": 25,\n    \"offset\": 0,\n    \"total\": 0,\n    \"errorCode\": \"OK\",\n    \"errorMessage\": \"\",\n    \"hasMore\": false\n}"
+						}
+					]
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "baseURL",
+			"value": "https://svdnjsap005",
+			"type": "string"
+		},
+		{
+			"key": "wol-sessionId-ok",
+			"value": "FA603D54D80A23B3E0532014000A8494",
+			"type": "string"
+		},
+		{
+			"key": "wol-sessionId-denied",
+			"value": "denied",
+			"type": "string"
+		},
+		{
+			"key": "q",
+			"value": "copper",
+			"type": "string"
+		},
+		{
+			"key": "branchId",
+			"value": "SB",
+			"type": "string"
+		},
+		{
+			"key": "wol-sessionId",
+			"value": "FA603D54D80A23B3E0532014000A8494",
+			"type": "string"
+		},
+		{
+			"key": "supplyType",
+			"value": "DCTransferOrder",
+			"type": "string"
+		},
+		{
+			"key": "purchaseOrderSchema",
+			"value": "{\n    \"type\": \"object\",\n    \"properties\": {\n        \"offset\": { \"type\": \"integer\" },\n        \"limit\": { \"type\": \"integer\" },\n        \"hasMore\": { \"type\": \"boolean\" },\n        \"totalResults\": { \"type\": \"integer\" },\n        \"count\": { \"type\": \"integer\" },\n        \"errorCode\": { \"type\": \"string\" },\n        \"errorMessage\": { \"type\": \"string\" },\n        \"items\": { \n            \"type\": \"array\" ,\n            \"items\": {\n                \"type\": \"object\",\n                \"properties\": {\n                    \"purchaseOrderNumber\": {\"type\": \"integer\"},\n                    \"supplierNumber\": {\"type\": \"string\"},\n                    \"supplierName\": {\"type\": \"string\"},\n                    \"orderNumber\": {\"type\": \"string\"},\n                    \"orderDate\": { \n                        \"anyOf\":\n                        [\n                            {\"type\": \"string\", \"format\": \"date\"},\n                            {\"type\": \"null\"}\n                        ]\n                    },\n                    \"customerAccount\": {\"type\": \"string\"},\n                    \"customerName\": {\"type\": \"string\"},\n                    \"productCode\": {\"type\": \"string\"},\n                    \"productDescription\": {\"type\": \"string\"},\n                    \"outstandingQuantity\": {\"type\": \"number\"},\n                    \"promiseDate\": { \n                        \"anyOf\":\n                        [\n                            {\"type\": \"string\", \"format\": \"date\"},\n                            {\"type\": \"null\"}\n                        ]\n                    },\n                    \"expectedArrivalDate\": { \n                        \"anyOf\":\n                        [\n                            {\"type\": \"string\", \"format\": \"date\"},\n                            {\"type\": \"null\"}\n                        ]\n                    },\n                    \"status\": {\"type\": \"string\"}\n                },\n                \"required\": [\"purchaseOrderNumber\", \"supplierNumber\", \"supplierName\", \"orderNumber\", \"orderDate\", \"customerAccount\", \"customerName\", \"productCode\", \"productDescription\", \"outstandingQuantity\", \"promiseDate\", \"expectedArrivalDate\", \"status\"]\n            }\n        }\n    },\n    \"required\": [\"items\", \"offset\", \"limit\", \"hasMore\", \"totalResults\", \"count\", \"errorCode\", \"errorMessage\"]\n}",
+			"type": "string"
+		},
+		{
+			"key": "wol-appId",
+			"value": "cbrtrading",
+			"type": "string"
+		}
+	]
+}
